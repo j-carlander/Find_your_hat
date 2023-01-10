@@ -15,14 +15,50 @@ class Field {
       console.log(row.join(""));
     });
   }
+  static generateField(length, height, holePercentage) {
+    // holePercentage
+    let field = [];
+    for (let y = 0; y < height; y++) {
+      field.push([]);
+      for (let x = 0; x < length; x++) {
+        field[y].push("░");
+      }
+    }
+    // player start point
+    field[0][0] = "*";
+
+    // adding holes = O
+    let numOfHoles = Math.ceil((length * height * holePercentage) / 100);
+    for (let i = 0; i < numOfHoles; i++) {
+      let randomX = Math.floor(Math.random() * length);
+      let randomY = Math.floor(Math.random() * height);
+      while (randomX == 0 && randomY == 0) {
+        randomY = Math.floor(Math.random() * height);
+      } // if both coordinates is 0 rerun the Y-coordinate to not hit the 0,0
+      field[randomX][randomY] = "O";
+    }
+
+    //Adding the hat to the game board
+    let hatX = Math.floor(Math.random() * length);
+    let hatY = Math.floor(Math.random() * height);
+    while (hatX == 0 && hatY == 0) {
+      randomY = Math.floor(Math.random() * height);
+    } // if both coordinates is 0 rerun the Y-coordinate to not hit the 0,0
+    field[hatX][hatY] = "^";
+
+    return field;
+  }
 }
 
-const myField = new Field([
+const testArray = [
   ["*", "░", "O"],
   ["░", "O", "░"],
   ["░", "^", "░"],
-]);
+];
 
+const myField = new Field(Field.generateField(5, 5, 30));
+
+// console.log(Field.generateField(5, 5, 30));
 myField.print();
 
 let hatFound = false;
